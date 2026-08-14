@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ORGANIZER
+  CUSTOMER
+  GATEKEEPER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  events       Event[]
+  reservations Reservation[]
+  tickets      Ticket[]
+}
+
+model Movie {
+  id          String   @id @default(cuid())
+  tmdbId      Int      @unique
+  title       String
+  overview    String
+  posterUrl   String?
+  releaseDate DateTime?
+
+  createdAt   DateTime @default(now())
+
+  events      Event[]
+}
+
+model Event {
+  id         String   @id @default(cuid())
+  date       DateTime
+  location   String
+  capacity   Int
+  price      Float
+
+  organizerId String
+  organizer   User     @relation(fields: [organizerId], references: [id])
+
+  movieId     String
+  movie       Movie    @relation(fields: [movieId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  seats        Seat[]
+  reservations Reservation[]
+}
+
+model Seat {
+  id      String @id @default(cuid())
+  row     String
+  number  Int
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  reservation ReservationSeat?
+
+  @@unique([eventId, row, number])
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  CANCELLED
+}
+
+model Reservation {
+  id         String            @id @default(cuid())
+  status     ReservationStatus @default(PENDING)
+
+  customerId String
+  customer   User              @relation(fields: [customerId], references: [id])
+
+  eventId    String
+  event      Event             @relation(fields: [eventId], references: [id])
+
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  seats      ReservationSeat[]
+
+  payment Payment?
+}
+
+model ReservationSeat {
+  id            String      @id @default(cuid())
+
+  reservationId String
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+
+  seatId        String      @unique
+  seat          Seat        @relation(fields: [seatId], references: [id])
+
+  ticket Ticket?
+}
+
+enum PaymentStatus {
+  APPROVED
+  REJECTED
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  status        PaymentStatus
+  amount        Float
+
+  reservationId String        @unique
+  reservation   Reservation   @relation(fields: [reservationId], references: [id])
+
+  createdAt     DateTime      @default(now())
+}
+
+model Ticket {
+  id           String    @id @default(cuid())
+  qrCode       String    @unique
+  usedAt       DateTime?
+
+  customerId   String
+  customer     User      @relation(fields: [customerId], references: [id])
+
+  reservationSeatId String @unique
+  reservationSeat   ReservationSeat @relation(fields: [reservationSeatId], references: [id])
+
+  createdAt    DateTime  @default(now())
+}
