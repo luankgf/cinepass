@@ -6,6 +6,7 @@ import { authorize } from "./middlewares/authorize";
 import movieRoutes from "./routes/movie.routes";
 import eventRoutes from "./routes/event.routes";
 import reservationRoutes from "./routes/reservation.routes";
+import paymentRoutes from "./routes/payment.routes";
 
 const app = express();
 
@@ -23,5 +24,7 @@ app.use("/movies", movieRoutes);
 app.use("/events", eventRoutes);
 
 app.use("/reservations", reservationRoutes);
+
+app.use("/payments", paymentRoutes);
 
 export default app;
