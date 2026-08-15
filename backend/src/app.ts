@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import { authenticate } from "./middlewares/authenticate";
 import { authorize } from "./middlewares/authorize";
+import movieRoutes from "./routes/movie.routes";
 
 const app = express();
 
@@ -14,5 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+
+app.use("/movies", movieRoutes);
 
 export default app;
