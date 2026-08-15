@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
+import { authenticate } from "./middlewares/authenticate";
+import { authorize } from "./middlewares/authorize";
 
 const app = express();
 
