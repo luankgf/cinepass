@@ -41,12 +41,19 @@ model Movie {
   events      Event[]
 }
 
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+}
+
 model Event {
-  id         String   @id @default(cuid())
+  id         String      @id @default(cuid())
   date       DateTime
   location   String
   capacity   Int
-  price      Float
+  price      Decimal     @db.Decimal(10, 2)
+  status     EventStatus @default(DRAFT)
 
   organizerId String
   organizer   User     @relation(fields: [organizerId], references: [id])
@@ -119,7 +126,7 @@ enum PaymentStatus {
 model Payment {
   id            String        @id @default(cuid())
   status        PaymentStatus
-  amount        Float
+  amount        Decimal       @db.Decimal(10, 2)
 
   reservationId String        @unique
   reservation   Reservation   @relation(fields: [reservationId], references: [id])
