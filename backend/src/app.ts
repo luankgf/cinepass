@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.routes";
 import { authenticate } from "./middlewares/authenticate";
 import { authorize } from "./middlewares/authorize";
 import movieRoutes from "./routes/movie.routes";
+import eventRoutes from "./routes/event.routes";
 
 const app = express();
 
@@ -17,5 +18,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 
 app.use("/movies", movieRoutes);
+
+app.use("/events", eventRoutes);
 
 export default app;
