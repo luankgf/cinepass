@@ -138,6 +138,11 @@ O banco é hospedado no [Neon](https://neon.tech), evitando dependência de inst
 - Mensagens de erro de login são genéricas ("e-mail ou senha inválidos"), sem indicar qual dos dois está incorreto — evita expor quais e-mails estão cadastrados.
 - Código do ingresso (QR) planejado para ser gerado a partir de uma assinatura própria, não apenas um identificador exposto.
 
+## Integridade de dados e concorrência
+
+- A reserva de assentos usa transação do Prisma (`$transaction`) combinada com constraint `@unique` no banco, garantindo atomicidade: ou a reserva inteira é criada, ou nada é salvo.
+- Testado manualmente o cenário de concorrência: duas tentativas de reservar o mesmo assento resultam em uma reserva bem-sucedida e uma bloqueada com erro claro (`400 - Um ou mais assentos já foram reservados por outro cliente`).
+
 ---
 
 ## Funcionalidades
@@ -151,20 +156,18 @@ O banco é hospedado no [Neon](https://neon.tech), evitando dependência de inst
 - [x] Registro de usuário
 - [x] Login com JWT
 - [x] Hash de senha (bcrypt)
+- [x] Middleware de autenticação (`authenticate`)
+- [x] Middleware de autorização por papel (`authorize`)
+- [x] Integração com TMDb (busca de filmes)
+- [x] CRUD de eventos (criar, publicar, listar públicos, detalhes, listar do organizador)
+- [x] Geração automática de assentos ao criar evento
+- [x] Reserva de assentos, com transação e proteção contra venda duplicada
+- [x] Pagamento simulado (aprovação e recusa)
+- [x] Geração de ingresso com QR Code
+- [x] Validação na portaria (válido, já utilizado, evento errado, inválido)
+- [x] Compartilhamento de ingresso por link
+- [x] Seed de dados de teste
 
-### Em desenvolvimento
-- [ ] Middleware de autenticação (`authenticate`)
-- [ ] Middleware de autorização por papel (`authorize`)
-- [ ] Integração com TMDb
-- [ ] CRUD de eventos
-- [ ] Seleção de assentos
-- [ ] Reserva (com transação para concorrência)
-- [ ] Pagamento simulado
-- [ ] Geração de ingresso com QR Code
-- [ ] Compartilhamento de ingresso por link
-- [ ] Validação na portaria
-- [ ] Seed de dados de teste
-- [ ] Deploy
 
 ---
 
@@ -209,16 +212,43 @@ npm run dev
 
 O desafio exige dados semeados para permitir a avaliação do fluxo sem configuração manual.
 
-Após a implementação do seed, serão disponibilizados aqui:
+Após rodar `npx prisma db seed`, os seguintes usuários ficam disponíveis (senha igual para todos):
 
 | Papel | E-mail | Senha |
 |---|---|---|
-| Organizador | Em breve | Em breve |
-| Cliente 1 | Em breve | Em breve |
-| Cliente 2 | Em breve | Em breve |
-| Portaria | Em breve | Em breve |
+| Organizador | organizador@cinepass.com | 123456 |
+| Cliente 1 | cliente1@cinepass.com | 123456 |
+| Cliente 2 | cliente2@cinepass.com | 123456 |
+| Portaria | portaria@cinepass.com | 123456 |
+
+Também é criado um evento publicado ("Duna", Cinemark Shopping Center) com 50 assentos, sendo 2 já reservados e com ingresso confirmado para o Cliente 1 — os demais 48 assentos ficam livres para testar o fluxo de reserva do zero.
 
 ---
+
+## Pagamento simulado
+
+O pagamento é simulado através de cartões de teste, sem integração com gateway real e sem armazenamento do número do cartão no banco de dados.
+
+Para testar:
+
+| Cenário | Número do cartão |
+|---|---|
+| Aprovado | `4242 4242 4242 4242` |
+| Recusado | `4000 0000 0000 0002` |
+| Qualquer outro número | Erro de validação (cartão inválido) |
+
+- **Aprovado**: reserva passa para `CONFIRMED`, um `Ticket` com QR Code é gerado para cada assento reservado.
+- **Recusado**: reserva passa para `REJECTED`, os assentos são liberados automaticamente (removidos da reserva) e voltam a ficar disponíveis para outros clientes.
+
+## Validação de ingressos (portaria)
+
+O código do ingresso (usado tanto no QR quanto na digitação manual) é composto por `id.assinatura`, onde a assinatura é gerada via HMAC-SHA256 a partir de uma chave secreta do servidor. Isso impede que alguém gere um código válido sem conhecer essa chave — qualquer adulteração no código é detectada antes mesmo de consultar o banco de dados.
+
+A validação retorna quatro estados possíveis:
+- **Válido**: ingresso ainda não utilizado, evento correto — marca `usedAt` e libera a entrada.
+- **Já utilizado**: ingresso já foi validado anteriormente.
+- **Evento errado**: ingresso pertence a outro evento.
+- **Inválido**: código malformado ou assinatura não confere (adulterado/forjado).
 
 ## Uso de IA
 
