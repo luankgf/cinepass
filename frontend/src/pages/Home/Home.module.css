@@ -1,16 +1,35 @@
-.container { padding: 24px; max-width: 900px; margin: 0 auto; }
-.title { font-size: 28px; color: #111; }
+.container {
+  min-height: 100vh;
+  background: #0f0f13;
+  color: #f4f4f6;
+}
 
-.userInfo {
-  margin-top: 16px;
+.header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid #2a2a35;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  color: #b4b4bd;
 }
 
 .logoutButton {
   background: transparent;
-  border: 1px solid #444;
+  border: 1px solid #2a2a35;
   color: #fff;
   padding: 6px 14px;
   border-radius: 6px;
@@ -21,4 +40,88 @@
 .logoutButton:hover {
   border-color: #e63946;
   color: #e63946;
+}
+
+.loginLink {
+  background: #e63946;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.loginLink:hover {
+  background: #d12d3a;
+}
+
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 24px;
+}
+
+.status {
+  color: #8b8b96;
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #18181f;
+  border: 1px solid #2a2a35;
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  border-color: #e63946;
+  transform: translateY(-2px);
+}
+
+.poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.cardBody {
+  padding: 14px;
+}
+
+.movieTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.eventInfo {
+  font-size: 13px;
+  color: #8b8b96;
+  margin: 0 0 4px;
+}
+
+.price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e63946;
+  margin: 10px 0 0;
 }
