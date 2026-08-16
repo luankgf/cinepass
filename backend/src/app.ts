@@ -7,6 +7,7 @@ import movieRoutes from "./routes/movie.routes";
 import eventRoutes from "./routes/event.routes";
 import reservationRoutes from "./routes/reservation.routes";
 import paymentRoutes from "./routes/payment.routes";
+import ticketRoutes from "./routes/ticket.routes";
 
 const app = express();
 
@@ -26,5 +27,7 @@ app.use("/events", eventRoutes);
 app.use("/reservations", reservationRoutes);
 
 app.use("/payments", paymentRoutes);
+
+app.use("/tickets", ticketRoutes);
 
 export default app;
