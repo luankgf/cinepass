@@ -1,2 +1,24 @@
 .container { padding: 24px; max-width: 900px; margin: 0 auto; }
 .title { font-size: 28px; color: #111; }
+
+.userInfo {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoutButton {
+  background: transparent;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.logoutButton:hover {
+  border-color: #e63946;
+  color: #e63946;
+}
