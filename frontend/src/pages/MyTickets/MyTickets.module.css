@@ -1,0 +1,99 @@
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.title {
+  color: #f4f4f6;
+  margin-bottom: 24px;
+}
+
+.message {
+  color: #b4b4bd;
+  text-align: center;
+  padding: 48px 16px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #18181f;
+  border: 1px solid #2a2a35;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.movieTitle {
+  color: #f4f4f6;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.statusAvailable {
+  color: #22c55e;
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.statusUsed {
+  color: #b4b4bd;
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.detail {
+  color: #b4b4bd;
+  font-size: 0.9rem;
+  margin: 4px 0;
+}
+
+.usedInfo {
+  color: #b4b4bd;
+  font-size: 0.85rem;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+.qrArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.shareButton {
+  background-color: #e63946;
+  color: #f4f4f6;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.shareButton:hover {
+  opacity: 0.9;
+}

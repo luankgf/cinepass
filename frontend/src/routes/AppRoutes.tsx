@@ -3,6 +3,7 @@ import { Home } from "../pages/Home/Home";
 import { Login } from "../pages/Login/Login";
 import { EventDetails } from "../pages/EventDetails/EventDetails";
 import { Checkout } from "../pages/Checkout/Checkout";
+import { MyTickets } from "../pages/MyTickets/MyTickets";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 export function AppRoutes() {
@@ -17,6 +18,14 @@ export function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["CUSTOMER"]}>
               <Checkout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-tickets"
+          element={
+            <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+              <MyTickets />
             </ProtectedRoute>
           }
         />
