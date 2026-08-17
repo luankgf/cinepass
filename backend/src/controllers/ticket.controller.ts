@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { validateTicket, getTicketForShare } from "../services/ticket.service";
+import { validateTicket, getTicketForShare, listMyTickets } from "../services/ticket.service";
 
 export async function validate(req: Request, res: Response) {
   try {
@@ -24,5 +24,15 @@ export async function share(req: Request, res: Response) {
     return res.status(200).json(ticket);
   } catch (error) {
     return res.status(404).json({ message: (error as Error).message });
+  }
+}
+
+export async function mine(req: Request, res: Response) {
+  try {
+    const customerId = req.user!.id;
+    const tickets = await listMyTickets(customerId);
+    return res.status(200).json(tickets);
+  } catch (error) {
+    return res.status(500).json({ message: "Erro ao buscar seus ingressos" });
   }
 }

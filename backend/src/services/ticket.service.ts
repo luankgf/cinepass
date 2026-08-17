@@ -114,3 +114,26 @@ export async function getTicketForShare(ticketId: string) {
     },
   };
 }
+
+export async function listMyTickets(customerId: string) {
+  const tickets = await prisma.ticket.findMany({
+    where: { customerId },
+    include: {
+      reservationSeat: {
+        include: {
+          seat: true,
+          reservation: {
+            include: {
+              event: {
+                include: { movie: true },
+              },
+            },
+          },
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return tickets;
+}
