@@ -1,4 +1,5 @@
 import type { Movie } from "./movie";
+import type { Seat } from "./seat";
 
 export type EventStatus = "DRAFT" | "PUBLISHED" | "CANCELLED";
 
@@ -14,4 +15,8 @@ export interface Event {
   createdAt: string;
   updatedAt: string;
   movie: Movie;
+}
+
+export interface EventDetails extends Event {
+  seats: Seat[];
 }
