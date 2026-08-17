@@ -223,6 +223,8 @@ Após rodar `npx prisma db seed`, os seguintes usuários ficam disponíveis (sen
 
 Também é criado um evento publicado ("Duna", Cinemark Shopping Center) com 50 assentos, sendo 2 já reservados e com ingresso confirmado para o Cliente 1 — os demais 48 assentos ficam livres para testar o fluxo de reserva do zero.
 
+**Nota:** durante o desenvolvimento, o usuário `cliente1@cinepass.com` foi utilizado repetidamente para testar o fluxo de reserva e pagamento, além dos 2 assentos originais do seed. Por isso, ao acessar "Meus Ingressos" com esse usuário, é esperado ver mais de 2 ingressos — todos gerados durante os testes manuais do fluxo completo (reserva → pagamento → ticket).
+
 ---
 
 ## Pagamento simulado
